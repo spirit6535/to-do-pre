@@ -24,12 +24,16 @@ function createItem(item) {
 	const clone = template.content.querySelector(".to-do__item").cloneNode(true);
 
 	const textElement = clone.querySelector(".to-do__item-text");
+	const deleteButton = clone.querySelector(".to-do__item-button_type_delete");
+	const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
+	const editButton = clone.querySelector(".to-do__item-button_type_edit");
+	
 	let originalText = "";
-	textElement.addEventListener('focus', function(event) {
+	textElement.addEventListener('focus', function() {
 		originalText = textElement.textContent;
 	});
 
-	textElement.addEventListener('blur', function(event) {
+	textElement.addEventListener('blur', function() {
 		textElement.setAttribute("contenteditable", "false");
 		if(textElement.textContent.trim()) {
 			const items = getTasksFromDOM();
@@ -40,15 +44,13 @@ function createItem(item) {
 		}
 	});
 	
-	const deleteButton = clone.querySelector(".to-do__item-button_type_delete");
-	deleteButton.addEventListener("click", function(event) {
+	deleteButton.addEventListener("click", function() {
 		clone.remove();
 		const items = getTasksFromDOM();
 		saveTasks(items);
 	});
 
-	const duplicateButton = clone.querySelector(".to-do__item-button_type_duplicate");
-	duplicateButton.addEventListener("click", function(event) {
+	duplicateButton.addEventListener("click", function() {
 		const itemName = textElement.textContent;
 		const newItem = createItem(itemName);
 		listElement.prepend(newItem);
@@ -56,8 +58,7 @@ function createItem(item) {
 		saveTasks(items);
 	});
 
-	const editButton = clone.querySelector(".to-do__item-button_type_edit");
-	editButton.addEventListener("click", function(event) {
+	editButton.addEventListener("click", function() {
 		textElement.setAttribute("contenteditable", "true");
 		textElement.focus();
 	});
@@ -87,6 +88,8 @@ formElement.addEventListener("submit", function(event) {
 		const items = getTasksFromDOM();
 		saveTasks(items);
 		inputElement.value = "";
+	} else {
+		alert("Пожалуйста, введите текст задачи");
 	}
 });
 
